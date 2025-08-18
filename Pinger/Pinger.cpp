@@ -5,9 +5,12 @@
 #include <shellapi.h>
 #include "Pinger.h"
 
+//modules
+#include "Timer.h"
+
+
+
 #define MAX_LOADSTRING 100
-
-
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -15,6 +18,9 @@ HWND hWnd;                                      // global reference to window
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 NOTIFYICONDATA nid;                             // globabl referene to icon so WndProc can access
+
+HWND g_hButton = nullptr;
+bool g_timerRunning = false;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -122,12 +128,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	wcscpy_s(nid.szTip, L"Pinger running...");
 	Shell_NotifyIcon(NIM_ADD, &nid);
 
-
-	SetTimer(hWnd, 1, 10000, NULL);
-
-	HWND hButton = CreateWindowW(
+	g_hButton = CreateWindowW(
 		L"BUTTON",
-		L"PING",
+		L"Start",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 		20, 20,
 		100, 30,
@@ -135,11 +138,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)1,
 		hInstance,
 		nullptr);
-
-	//ShowWindow(hWnd, nCmdShow);
-
-
-
 	return TRUE;
 }
 
@@ -193,8 +191,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wmId)
 		{
 		case 1:
-			SetForegroundWindow(hWnd);
-			MessageBox(hWnd, L"Ping button clicked!", L"Info", MB_OK | MB_TOPMOST);
+			if (!IsTimerRunning())
+			{
+				StartTimer(hWnd);
+				SetWindowText(g_hButton, L"STOP");
+			}
+			else
+			{
+				StopTimer(hWnd);
+				SetWindowText(g_hButton, L"Start");
+			}
 			break;
 		case IDM_SHOWWINDOW:
 			ShowWindow(hWnd, SW_SHOW);
@@ -207,8 +213,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_TIMER:
-		if (wParam == 1)
+		if (wParam == TIMER_ID)
 		{
+			StopTimer(hWnd);
+			g_timerRunning = false;
+
 			MessageBox(hWnd, L"10 seconds passed!", L"Info", MB_OK | MB_TOPMOST);
 		}
 		break;
@@ -221,24 +230,4 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
-}
-
-// Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
-
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
-		}
-		break;
-	}
-	return (INT_PTR)FALSE;
 }
