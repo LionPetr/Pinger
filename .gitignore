@@ -1,0 +1,24 @@
+# Visual Studio files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.user
+
+# Build folders
+Debug/
+Release/
+x64/
+x86/
+
+# Executables and object files
+*.exe
+*.obj
+*.pdb
+
+# Other temporary files
+*.log
+*.tlog/
+*.idb
+*.ipch
+*.iobj
