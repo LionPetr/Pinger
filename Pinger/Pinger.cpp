@@ -144,6 +144,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)1,
 		hInstance,
 		nullptr);
+	g_hButton = CreateWindowW(
+		L"BUTTON",
+		L"Problem",
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+		140, 20,
+		100, 30,
+		hWnd,
+		(HMENU)2,
+		hInstance,
+		nullptr);
 	return TRUE;
 }
 
@@ -207,6 +217,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				StopTimer(hWnd);
 				SetWindowText(g_hButton, L"Start");
 			}
+			break;
+		case 2:
+			ShowProblemDialog(hInst, hWnd);
 			break;
 		case IDM_SHOWWINDOW:
 			ShowWindow(hWnd, SW_SHOW);
