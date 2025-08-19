@@ -19,6 +19,9 @@
 //my stuff 
 #define IDM_SHOWWINDOW 106
 #define WM_TRAYICON (WM_USER + 1)
+#define IDD_PROBLEM_DIALOG 200
+#define IDC_PROBLEM_STATIC 1001
+#define IDC_ANSWER_EDIT    1002
 
 //timer variables
 #define Timer_ID 1

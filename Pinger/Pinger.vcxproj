@@ -125,12 +125,14 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Pinger.h" />
+    <ClInclude Include="ProblemDialog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Pinger.cpp" />
+    <ClCompile Include="ProblemDialog.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>

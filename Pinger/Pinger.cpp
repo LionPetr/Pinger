@@ -7,6 +7,8 @@
 
 //modules
 #include "Timer.h"
+#include "ProblemDialog.h"
+#include <stdio.h>
 
 
 
@@ -37,6 +39,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: Place code here.
+
+	FILE* fp;
+	AllocConsole();
+	freopen_s(&fp, "CONOUT$", "w", stdout);
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -215,10 +221,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_TIMER:
 		if (wParam == TIMER_ID)
 		{
-			StopTimer(hWnd);
-			g_timerRunning = false;
+			wprintf(L"timer fired");
 
-			MessageBox(hWnd, L"10 seconds passed!", L"Info", MB_OK | MB_TOPMOST);
+			StopTimer(hWnd);
+
+			ShowProblemDialog(hInst, hWnd);
+
+			StartTimer(hWnd);
 		}
 		break;
 	case WM_DESTROY:
